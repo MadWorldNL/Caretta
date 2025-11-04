@@ -5,7 +5,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{B1AB2FF4-192F-4645-8001-C8C7AE11A7C4}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		README.md = README.md
+		LICENSE = LICENSE
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{47D4518B-A428-43D0-B153-8097A7BD8292}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,5 +23,8 @@ Global
 		{6EF65F12-9615-4488-8F19-95EF753559F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EF65F12-9615-4488-8F19-95EF753559F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EF65F12-9615-4488-8F19-95EF753559F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6EF65F12-9615-4488-8F19-95EF753559F9} = {47D4518B-A428-43D0-B153-8097A7BD8292}
 	EndGlobalSection
 EndGlobal
