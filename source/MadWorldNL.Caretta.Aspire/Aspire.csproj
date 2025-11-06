@@ -14,4 +14,8 @@
         <PackageReference Include="Aspire.Hosting.AppHost" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MadWorldNL.Caretta.Controllers.Api\Api.csproj" />
+    </ItemGroup>
+
 </Project>
