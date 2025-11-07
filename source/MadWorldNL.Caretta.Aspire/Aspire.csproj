@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MadWorldNL.Caretta.Controllers.Api\Api.csproj" />
+      <ProjectReference Include="..\MadWorldNL.Caretta.Controllers.Web\Web.csproj" />
     </ItemGroup>
 
 </Project>
