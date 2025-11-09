@@ -4,4 +4,10 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Contracts\Contracts.csproj" />
+      <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Entities\Entities.csproj" />
+      <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Functions\Functions.csproj" />
+    </ItemGroup>
+
 </Project>

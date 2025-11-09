@@ -1,0 +1,6 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Entities\Entities.csproj" />
+  </ItemGroup>
+</Project>
