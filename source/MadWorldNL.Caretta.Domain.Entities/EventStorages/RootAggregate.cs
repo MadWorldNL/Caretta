@@ -2,9 +2,10 @@ namespace MadWorldNL.Caretta.EventStorages;
 
 public abstract class RootAggregate
 {
+    public string AggregateId => $"{AggregateType}-{Id}";
     public abstract string AggregateType { get; }
     
-    public Guid Id { get; protected init; }
+    public Guid Id { get; protected set; }
     
     private readonly List<IDomainEvent> _domainEvents = new();
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
@@ -15,4 +16,6 @@ public abstract class RootAggregate
     }
 
     public void ClearDomainEvents() => _domainEvents.Clear();
+    
+    public abstract void Apply(IDomainEvent @event);
 }
