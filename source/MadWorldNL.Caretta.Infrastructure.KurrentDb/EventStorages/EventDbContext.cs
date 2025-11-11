@@ -1,9 +1,21 @@
+using System.Text.Json;
+using KurrentDB.Client;
+
 namespace MadWorldNL.Caretta.EventStorages;
 
-public class EventDbContext() : IEventStorage
+public class EventDbContext(KurrentDBClient client) : IEventStorage
 {
-    public void Store(IEvent @event)
+    public async Task Store(RootAggregate aggregate)
     {
-        throw new NotImplementedException();
+        var streamName = $"{aggregate.AggregateType}-{aggregate.Id}";
+        var events = aggregate.DomainEvents.Select(domainEvent => 
+            new EventData(
+                Uuid.NewUuid(),
+                domainEvent.GetType().Name,
+                JsonSerializer.SerializeToUtf8Bytes(domainEvent),
+                null));
+        await client.AppendToStreamAsync(streamName, StreamState.Any, events);
+    
+        aggregate.ClearDomainEvents();
     }
 }

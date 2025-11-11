@@ -2,7 +2,8 @@ using MadWorldNL.Caretta;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var eventStore = builder.AddContainer(ContainerDefinitions.EventStoreDb, "docker.kurrent.io/kurrent-latest/kurrentdb:25.1")
+var eventStore = builder
+    .AddContainer(ContainerDefinitions.EventStoreDb, "docker.kurrent.io/kurrent-latest/kurrentdb:25.1")
     .WithEnvironment(e =>
     {
         e.EnvironmentVariables["KURRENTDB_CLUSTER_SIZE"] = 1;
@@ -10,7 +11,8 @@ var eventStore = builder.AddContainer(ContainerDefinitions.EventStoreDb, "docker
         e.EnvironmentVariables["KURRENTDB_START_STANDARD_PROJECTIONS"] = true;
         e.EnvironmentVariables["KURRENTDB_INSECURE"] = true;
         e.EnvironmentVariables["KURRENTDB_ENABLE_ATOM_PUB_OVER_HTTP"] = true;
-    });
+    })
+    .WithEndpoint(2113, 2113);
 
 var api = builder.AddProject<Projects.Api>(ProjectDefinitions.Api)
     .WithUrlForEndpoint("http", c => c.DisplayText = "ApiInsecure")

@@ -1,5 +1,5 @@
 namespace MadWorldNL.Caretta.EventStorages;
 
-public interface IEvent
+public interface IDomainEvent
 {
 }
