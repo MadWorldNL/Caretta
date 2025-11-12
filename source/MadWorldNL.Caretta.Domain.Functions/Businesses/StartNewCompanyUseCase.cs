@@ -1,9 +1,15 @@
+using MadWorldNL.Caretta.EventStorages;
+
 namespace MadWorldNL.Caretta.Businesses;
 
-public class StartNewCompanyUseCase()
+public class StartNewCompanyUseCase(IEventStorage eventStorage)
 {
-    public Task Execute()
+    public async Task<Guid> Execute(string name)
     {
-        throw new NotImplementedException();
+        var company = Company.Found(name);
+        
+        await eventStorage.Store(company);
+        
+        return company.Id;
     }
 }

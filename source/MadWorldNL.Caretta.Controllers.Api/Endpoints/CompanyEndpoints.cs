@@ -16,9 +16,9 @@ public static class CompanyEndpoints
             return await useCase.Query(guidId);
         });
         
-        companyEndpoints.MapPost("/StartNewCompany", () =>
+        companyEndpoints.MapPost("/StartNewCompany", ([FromBody] StartNewCompanyRequest request, [FromServices] StartNewCompanyUseCase useCase) =>
         {
-            return "Hello World!";
+            return useCase.Execute(request.Name);
         });
     }
 }

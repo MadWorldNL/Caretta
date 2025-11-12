@@ -8,16 +8,16 @@ public class EventDbContext(KurrentDBClient client) : IEventStorage
     public async Task<TRootAggregate> GetById<TRootAggregate>(Guid id) where TRootAggregate : RootAggregate
     {
         var rootAggregate = (TRootAggregate)Activator.CreateInstance(typeof(TRootAggregate), true)!;
-        
-        var stream = client.ReadStreamAsync(
-            Direction.Forwards, $"{rootAggregate}-{id}", StreamPosition.Start
-        );
 
-        await foreach (var resolved in stream)
+        var resolvedEvents = await client.ReadStreamAsync(
+            Direction.Forwards, $"{rootAggregate.AggregateType}-{id}", StreamPosition.Start
+        ).ToListAsync();
+
+        foreach (var resolvedEvent in resolvedEvents)
         {
             var @event = JsonSerializer.Deserialize(
-                resolved.Event.Data.Span,
-                Type.GetType(resolved.Event.EventType)!);
+                resolvedEvent.Event.Data.Span,
+                Type.GetType(resolvedEvent.Event.EventType)!);
 
             if (@event is IDomainEvent domainEvent)
             {
@@ -34,8 +34,8 @@ public class EventDbContext(KurrentDBClient client) : IEventStorage
         var events = aggregate.DomainEvents.Select(domainEvent => 
             new EventData(
                 Uuid.NewUuid(),
-                domainEvent.GetType().Name,
-                JsonSerializer.SerializeToUtf8Bytes(domainEvent),
+                $"{domainEvent.GetType().FullName}, {domainEvent.GetType().Assembly.GetName().Name}",
+                JsonSerializer.SerializeToUtf8Bytes(domainEvent, domainEvent.GetType()),
                 null));
         await client.AppendToStreamAsync(streamName, StreamState.Any, events);
     
