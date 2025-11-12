@@ -1,6 +1,6 @@
 namespace MadWorldNL.Caretta.Businesses;
 
-public class FoundNewCompanyUseCase()
+public class StartNewCompanyUseCase()
 {
     public Task Execute()
     {

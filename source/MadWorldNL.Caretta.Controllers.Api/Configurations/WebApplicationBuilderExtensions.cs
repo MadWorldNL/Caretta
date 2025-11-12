@@ -8,7 +8,7 @@ public static class WebApplicationBuilderExtensions
 {
     public static void AddFunctions(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<FoundNewCompanyUseCase>();
+        builder.Services.AddScoped<StartNewCompanyUseCase>();
         builder.Services.AddScoped<LoadCompanyUseCase>();
     }
     
