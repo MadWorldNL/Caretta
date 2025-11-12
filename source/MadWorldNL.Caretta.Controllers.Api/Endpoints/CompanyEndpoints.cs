@@ -1,3 +1,6 @@
+using MadWorldNL.Caretta.Businesses;
+using Microsoft.AspNetCore.Mvc;
+
 namespace MadWorldNL.Caretta.Endpoints;
 
 public static class CompanyEndpoints
@@ -6,7 +9,16 @@ public static class CompanyEndpoints
     {
         var companyEndpoints = app.MapGroup("Company");
 
-        companyEndpoints.MapGet("/Load", () => "Hello World!");
-        companyEndpoints.MapPost("/StartNewCompany", () => "Hello World!");
+        companyEndpoints.MapGet("/Load/{Id}", async ([FromQuery] string id, [FromServices] LoadCompanyUseCase useCase) =>
+        {
+            var guidId = Guid.Parse(id);
+            
+            return await useCase.Query(guidId);
+        });
+        
+        companyEndpoints.MapPost("/StartNewCompany", () =>
+        {
+            return "Hello World!";
+        });
     }
 }
