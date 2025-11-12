@@ -8,6 +8,11 @@
       <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Contracts\Contracts.csproj" />
       <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Entities\Entities.csproj" />
       <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Functions\Functions.csproj" />
+      <ProjectReference Include="..\MadWorldNL.Caretta.Infrastructure.KurrentDb\KurrentDb.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Endpoints\" />
     </ItemGroup>
 
 </Project>

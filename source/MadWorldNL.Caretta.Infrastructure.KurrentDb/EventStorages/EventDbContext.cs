@@ -5,20 +5,6 @@ namespace MadWorldNL.Caretta.EventStorages;
 
 public class EventDbContext(KurrentDBClient client) : IEventStorage
 {
-    public async Task Store(RootAggregate aggregate)
-    {
-        var streamName = aggregate.AggregateId;
-        var events = aggregate.DomainEvents.Select(domainEvent => 
-            new EventData(
-                Uuid.NewUuid(),
-                domainEvent.GetType().Name,
-                JsonSerializer.SerializeToUtf8Bytes(domainEvent),
-                null));
-        await client.AppendToStreamAsync(streamName, StreamState.Any, events);
-    
-        aggregate.ClearDomainEvents();
-    }
-
     public async Task<TRootAggregate> GetById<TRootAggregate>(Guid id) where TRootAggregate : RootAggregate
     {
         var rootAggregate = (TRootAggregate)Activator.CreateInstance(typeof(TRootAggregate), true)!;
@@ -40,5 +26,19 @@ public class EventDbContext(KurrentDBClient client) : IEventStorage
         }
 
         return rootAggregate;
+    }
+    
+    public async Task Store(RootAggregate aggregate)
+    {
+        var streamName = aggregate.AggregateId;
+        var events = aggregate.DomainEvents.Select(domainEvent => 
+            new EventData(
+                Uuid.NewUuid(),
+                domainEvent.GetType().Name,
+                JsonSerializer.SerializeToUtf8Bytes(domainEvent),
+                null));
+        await client.AppendToStreamAsync(streamName, StreamState.Any, events);
+    
+        aggregate.ClearDomainEvents();
     }
 }
