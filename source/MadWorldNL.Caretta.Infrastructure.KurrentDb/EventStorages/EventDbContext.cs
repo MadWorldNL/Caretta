@@ -5,15 +5,13 @@ namespace MadWorldNL.Caretta.EventStorages;
 
 public class EventDbContext(KurrentDBClient client) : IEventStorage
 {
-    public async Task<TRootAggregate> GetById<TRootAggregate>(Guid id) where TRootAggregate : RootAggregate
+    public Task<TRootAggregate> GetById<TRootAggregate>(Guid id) where TRootAggregate : RootAggregate
     {
         var rootAggregate = (TRootAggregate)Activator.CreateInstance(typeof(TRootAggregate), true)!;
 
         var resolvedEvents = client.ReadStreamAsync(
             Direction.Forwards, $"{rootAggregate.AggregateType}-{id}", StreamPosition.Start
-        );
-        
-        ASyncEnumerable.ToListAsync(source, cancellationToken);
+        ).ToEnumerable();
         
         foreach (var resolvedEvent in resolvedEvents)
         {
@@ -27,7 +25,7 @@ public class EventDbContext(KurrentDBClient client) : IEventStorage
             }
         }
 
-        return rootAggregate;
+        return Task.FromResult(rootAggregate);
     }
     
     public async Task Store(RootAggregate aggregate)
