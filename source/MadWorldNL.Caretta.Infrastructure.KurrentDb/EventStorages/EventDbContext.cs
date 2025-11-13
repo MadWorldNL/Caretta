@@ -9,10 +9,12 @@ public class EventDbContext(KurrentDBClient client) : IEventStorage
     {
         var rootAggregate = (TRootAggregate)Activator.CreateInstance(typeof(TRootAggregate), true)!;
 
-        var resolvedEvents = await client.ReadStreamAsync(
+        var resolvedEvents = client.ReadStreamAsync(
             Direction.Forwards, $"{rootAggregate.AggregateType}-{id}", StreamPosition.Start
-        ).ToListAsync();
-
+        );
+        
+        ASyncEnumerable.ToListAsync(source, cancellationToken);
+        
         foreach (var resolvedEvent in resolvedEvents)
         {
             var @event = JsonSerializer.Deserialize(
