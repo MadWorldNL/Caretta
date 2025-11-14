@@ -1,10 +1,11 @@
+using MadWorldNL.Caretta.DomainDrivenDevelopments.DefaultEntities;
 using MadWorldNL.Caretta.EventStorages;
 
 namespace MadWorldNL.Caretta.Businesses;
 
 public class StartNewCompanyUseCase(IEventStorage eventStorage)
 {
-    public async Task<Guid> Execute(string name)
+    public async Task<UniqueId> Execute(string name)
     {
         var company = Company.Found(name);
         

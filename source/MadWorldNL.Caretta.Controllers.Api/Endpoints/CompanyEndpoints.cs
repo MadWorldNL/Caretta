@@ -18,9 +18,10 @@ public static class CompanyEndpoints
             return company.Match(Results.Ok, () => Results.NotFound());
         });
         
-        companyEndpoints.MapPost("/StartNewCompany", ([FromBody] StartNewCompanyRequest request, [FromServices] StartNewCompanyUseCase useCase) =>
+        companyEndpoints.MapPost("/StartNewCompany", async ([FromBody] StartNewCompanyRequest request, [FromServices] StartNewCompanyUseCase useCase) =>
         {
-            return useCase.Execute(request.Name);
+            var id = await useCase.Execute(request.Name);
+            return Results.Ok(id.Value);
         });
     }
 }

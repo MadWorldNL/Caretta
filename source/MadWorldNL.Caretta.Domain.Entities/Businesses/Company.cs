@@ -1,3 +1,4 @@
+using MadWorldNL.Caretta.DomainDrivenDevelopments.DefaultEntities;
 using MadWorldNL.Caretta.EventStorages;
 
 namespace MadWorldNL.Caretta.Businesses;
@@ -13,7 +14,7 @@ public class Company : RootAggregate
 
     private Company(string name)
     {
-        Id = Guid.NewGuid();
+        Id = new UniqueId(Guid.NewGuid());
         Name = name;
         FoundedAt = DateTime.UtcNow;
 
