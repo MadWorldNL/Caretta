@@ -3,4 +3,7 @@
     <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Contracts\Contracts.csproj" />
     <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Entities\Entities.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LanguageExt.Core" />
+  </ItemGroup>
 </Project>

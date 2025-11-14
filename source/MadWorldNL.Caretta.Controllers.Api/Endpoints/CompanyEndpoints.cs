@@ -1,3 +1,4 @@
+using LanguageExt;
 using MadWorldNL.Caretta.Businesses;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,12 @@ public static class CompanyEndpoints
     {
         var companyEndpoints = app.MapGroup("Company");
 
-        companyEndpoints.MapGet("/Load/{Id}", async ([FromQuery] string id, [FromServices] LoadCompanyUseCase useCase) =>
+        companyEndpoints.MapGet("/Load/{Id}", ([FromQuery] string id, [FromServices] LoadCompanyUseCase useCase) =>
         {
             var guidId = Guid.Parse(id);
             
-            return await useCase.Query(guidId);
+            var company = useCase.Query(guidId);
+            return company.Match(Results.Ok, () => Results.NotFound());
         });
         
         companyEndpoints.MapPost("/StartNewCompany", ([FromBody] StartNewCompanyRequest request, [FromServices] StartNewCompanyUseCase useCase) =>

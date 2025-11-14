@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="KurrentDB.Client" />
+    <PackageReference Include="LanguageExt.Core" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MadWorldNL.Caretta.Domain.Entities\Entities.csproj" />

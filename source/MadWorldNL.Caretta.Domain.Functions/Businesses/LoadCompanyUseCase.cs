@@ -4,8 +4,8 @@ namespace MadWorldNL.Caretta.Businesses;
 
 public class LoadCompanyUseCase(IEventStorage eventStorage)
 {
-    public async Task<Company> Query(Guid id)
+    public Option<Company> Query(Guid id)
     {
-        return await eventStorage.GetById<Company>(id);
+        return eventStorage.GetById<Company>(id);
     }
 }

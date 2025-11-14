@@ -5,27 +5,34 @@ namespace MadWorldNL.Caretta.EventStorages;
 
 public class EventDbContext(KurrentDBClient client) : IEventStorage
 {
-    public Task<TRootAggregate> GetById<TRootAggregate>(Guid id) where TRootAggregate : RootAggregate
+    public Option<TRootAggregate> GetById<TRootAggregate>(Guid id) where TRootAggregate : RootAggregate
     {
         var rootAggregate = (TRootAggregate)Activator.CreateInstance(typeof(TRootAggregate), true)!;
 
-        var resolvedEvents = client.ReadStreamAsync(
-            Direction.Forwards, $"{rootAggregate.AggregateType}-{id}", StreamPosition.Start
-        ).ToEnumerable();
-        
-        foreach (var resolvedEvent in resolvedEvents)
+        try
         {
-            var @event = JsonSerializer.Deserialize(
-                resolvedEvent.Event.Data.Span,
-                Type.GetType(resolvedEvent.Event.EventType)!);
+            var resolvedEvents = client.ReadStreamAsync(
+                Direction.Forwards, $"{rootAggregate.AggregateType}-{id}", StreamPosition.Start
+            ).ToEnumerable();
 
-            if (@event is IDomainEvent domainEvent)
+            foreach (var resolvedEvent in resolvedEvents)
             {
-                rootAggregate.Apply(domainEvent);   
-            }
-        }
+                var @event = JsonSerializer.Deserialize(
+                    resolvedEvent.Event.Data.Span,
+                    Type.GetType(resolvedEvent.Event.EventType)!);
 
-        return Task.FromResult(rootAggregate);
+                if (@event is IDomainEvent domainEvent)
+                {
+                    rootAggregate.Apply(domainEvent);
+                }
+            }
+
+            return rootAggregate;
+        }
+        catch (StreamNotFoundException)
+        {
+            return Option<TRootAggregate>.None;
+        }
     }
     
     public async Task Store(RootAggregate aggregate)
