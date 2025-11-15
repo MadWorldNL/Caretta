@@ -1,5 +1,6 @@
 using LanguageExt;
 using MadWorldNL.Caretta.Businesses;
+using MadWorldNL.Caretta.Default;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MadWorldNL.Caretta.Endpoints;
@@ -15,13 +16,15 @@ public static class CompanyEndpoints
             var guidId = Guid.Parse(id);
             
             var company = useCase.Query(guidId);
-            return company.Match(Results.Ok, () => Results.NotFound());
+            return company.Match(
+                c => Results.Ok(c.ToResponse()), 
+                () => Results.NotFound());
         });
         
         companyEndpoints.MapPost("/StartNewCompany", async ([FromBody] StartNewCompanyRequest request, [FromServices] StartNewCompanyUseCase useCase) =>
         {
             var id = await useCase.Execute(request.Name);
-            return Results.Ok(id.Value);
+            return new ChangedResponse(id.Value);
         });
     }
 }

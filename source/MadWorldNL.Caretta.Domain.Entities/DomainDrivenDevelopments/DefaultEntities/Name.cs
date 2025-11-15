@@ -3,27 +3,27 @@ using MadWorldNL.Caretta.DomainDrivenDevelopments.DefaultExceptions;
 
 namespace MadWorldNL.Caretta.DomainDrivenDevelopments.DefaultEntities;
 
-public class UniqueId : ValueObject
+public class Name : ValueObject
 {
-    public Guid Value { get; private init; }
+    public string Value { get; private init; } = string.Empty;
     
-    private UniqueId() {} // for ORM
+    private Name() { } // for ORM
 
-    public UniqueId(Guid value)
+    public Name(string value)
     {
-        if (value == Guid.Empty)
+        if (string.IsNullOrWhiteSpace(value))
         {
-            throw new EmptyException<UniqueId>();
+            throw new EmptyException<Name>();
         }
         
         Value = value;
     }
-
-    public static UniqueId Empty => new()
+    
+    public static Name Empty => new()
     {
-        Value = Guid.Empty
+        Value = string.Empty
     };
-
+    
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

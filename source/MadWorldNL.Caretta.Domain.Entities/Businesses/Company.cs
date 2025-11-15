@@ -1,3 +1,4 @@
+using MadWorldNL.Caretta.Businesses.ValueObjects;
 using MadWorldNL.Caretta.DomainDrivenDevelopments.DefaultEntities;
 using MadWorldNL.Caretta.EventStorages;
 
@@ -7,16 +8,16 @@ public class Company : RootAggregate
 {
     public override string AggregateType { get; } = nameof(Company);
 
-    public string Name { get; private set; } = string.Empty;
-    public DateTime FoundedAt { get; private set; }
+    public Name Name { get; private set; } = Name.Empty;
+    public FoundedTime FoundedAt { get; private set; } = FoundedTime.Empty;
     
     private Company() { } // for ORM
 
     private Company(string name)
     {
         Id = new UniqueId(Guid.NewGuid());
-        Name = name;
-        FoundedAt = DateTime.UtcNow;
+        Name = new Name(name);
+        FoundedAt = new FoundedTime(DateTime.UtcNow);
 
         AddDomainEvent(new CompanyFoundedEvent(Id, Name, FoundedAt));
     }
