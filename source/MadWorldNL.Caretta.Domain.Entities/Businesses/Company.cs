@@ -11,6 +11,7 @@ public class Company : RootAggregate
     public Name Name { get; private set; } = Name.Empty;
     public FoundedTime FoundedAt { get; private set; } = FoundedTime.Empty;
     
+    [UsedImplicitly]
     private Company() { } // for ORM
 
     private Company(string name)
