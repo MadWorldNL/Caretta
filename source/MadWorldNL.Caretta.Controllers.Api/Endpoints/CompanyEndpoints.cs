@@ -26,5 +26,12 @@ public static class CompanyEndpoints
             var id = await useCase.Execute(request.Name);
             return new ChangedResponse(id.Value);
         });
+
+        companyEndpoints.MapPost("/RenameCompany",
+            async ([FromBody] RenameCompanyRequest request, [FromServices] RenameCompanyUseCase useCase) =>
+            {
+                var id = await useCase.Execute(request.Id, request.Name);
+                return new ChangedResponse(id.Value);
+            });
     }
 }

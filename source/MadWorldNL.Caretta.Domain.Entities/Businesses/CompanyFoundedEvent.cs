@@ -4,4 +4,4 @@ using MadWorldNL.Caretta.EventStorages;
 
 namespace MadWorldNL.Caretta.Businesses;
 
-public record CompanyFoundedEvent(UniqueId CompanyId, Name Name, FoundedTime FoundedAt) : IDomainEvent;
+public record CompanyFoundedEvent(UniqueId CompanyId, Name Name, FoundedTime FoundedAt, UpdatedTime UpdatedTime) : IDomainEvent;

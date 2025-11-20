@@ -1,3 +1,3 @@
 namespace MadWorldNL.Caretta.Businesses;
 
-public record LoadCompanyResponse(Guid Id, string Name, DateTime FoundedAt);
+public record LoadCompanyResponse(Guid Id, string Name, DateTime FoundedAt, DateTime UpdatedAt);
