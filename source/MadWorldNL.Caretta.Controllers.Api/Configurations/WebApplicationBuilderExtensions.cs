@@ -15,7 +15,8 @@ public static class WebApplicationBuilderExtensions
     
     public static void AddKurrentDb(this WebApplicationBuilder builder)
     {
-        var dbSettings = KurrentDBClientSettings.Create("kurrentdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false");
+        var connectionString = builder.Configuration.GetValue<string>("KurrentDB:ConnectionString") ?? throw new Exception("No connection string found for KurrentDB");
+        var dbSettings = KurrentDBClientSettings.Create(connectionString);
         
         builder.Services.AddSingleton(new KurrentDBClient(dbSettings));
         builder.Services.AddSingleton<IEventStorage, EventDbContext>();
