@@ -8,11 +8,11 @@ Scenario: Found a new company
     When I found the company
     Then the company "Caretta" should be created
     
-    @integration
-    Scenario: Rename a company
-        Given an existing company named "Caretta"
-        And I have chosen the new company name "Mad World"
-        When I rename the company
-        Then the company should be named "Mad World"
+@integration
+Scenario: Rename a company
+    Given an existing company named "Caretta"
+    And I have chosen the new company name "Mad World"
+    When I rename the company
+    Then the company should be named "Mad World"
      
     
