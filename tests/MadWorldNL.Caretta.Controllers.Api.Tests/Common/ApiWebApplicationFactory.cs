@@ -1,11 +1,14 @@
 using DotNet.Testcontainers.Containers;
+using JetBrains.Annotations;
 using MadWorldNL.Caretta.Common.TestContainers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace MadWorldNL.Caretta.Common;
 
+[UsedImplicitly]
 public class ApiWebApplicationFactory : WebApplicationFactory<Program>
 {
     private const int KurrentDbInternalPort = 2113;
@@ -14,6 +17,11 @@ public class ApiWebApplicationFactory : WebApplicationFactory<Program>
         .WithPort(KurrentDbInternalPort)
         .Build();
 
+    public EventDbContextSeeder GetSeeder()
+    {
+        return Services.GetRequiredService<EventDbContextSeeder>();
+    }
+    
     protected override IHost CreateHost(IHostBuilder builder)
     {
         _kurrentDbContainer.StartAsync().GetAwaiter().GetResult();
@@ -27,6 +35,11 @@ public class ApiWebApplicationFactory : WebApplicationFactory<Program>
             };
             
             config.AddInMemoryCollection(testSettings);
+        });
+
+        builder.ConfigureServices(services =>
+        {
+            services.AddSingleton<EventDbContextSeeder>();
         });
 
         return base.CreateHost(builder);

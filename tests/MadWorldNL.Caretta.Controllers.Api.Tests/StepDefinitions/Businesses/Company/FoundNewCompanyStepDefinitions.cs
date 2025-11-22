@@ -1,10 +1,9 @@
 using System.Net.Http.Json;
 using MadWorldNL.Caretta.Businesses;
-using MadWorldNL.Caretta.Common;
 using MadWorldNL.Caretta.Default;
 using Shouldly;
 
-namespace MadWorldNL.Caretta.StepDefinitions.Businesses;
+namespace MadWorldNL.Caretta.StepDefinitions.Businesses.Company;
 
 [Binding]
 public class FoundNewCompanyStepDefinitions(ApiWebApplicationFactory factory) : IClassFixture<ApiWebApplicationFactory>
