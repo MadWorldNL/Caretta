@@ -19,10 +19,12 @@ public class Company : RootAggregate
     {
         Id = new UniqueId(Guid.NewGuid());
         Name = new Name(name);
-        FoundedAt = new FoundedTime(DateTime.UtcNow);
-        UpdatedAt = new UpdatedTime(FoundedAt.Value);
+        
+        var now = DateTime.UtcNow;
+        FoundedAt = new FoundedTime(now);
+        UpdatedAt = new UpdatedTime(now);
 
-        AddDomainEvent(new CompanyFoundedEvent(Id, Name, FoundedAt, UpdatedAt));
+        Raise(new CompanyFoundedEvent(Id, Name, FoundedAt, UpdatedAt));
     }
 
     public static Company Found(string name)
@@ -32,10 +34,13 @@ public class Company : RootAggregate
 
     public void Rename(string name)
     {
+        if (Name.Value == name)
+            return;
+        
         Name = new Name(name);
         UpdatedAt = new UpdatedTime(DateTime.UtcNow);
         
-        AddDomainEvent(new CompanyRenamedEvent(Name, UpdatedAt));
+        Raise(new CompanyRenamedEvent(Id, Name, UpdatedAt));
     }
     
     public override void Apply(IDomainEvent @event)
@@ -48,6 +53,8 @@ public class Company : RootAggregate
             case CompanyRenamedEvent companyRenamedEvent:
                 Apply(companyRenamedEvent);
                 break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(@event), @event, null);
         }
     }
 
@@ -56,11 +63,12 @@ public class Company : RootAggregate
         Id = @event.CompanyId;
         Name = @event.Name;
         FoundedAt = @event.FoundedAt;
-        UpdatedAt = @event.UpdatedTime;
+        UpdatedAt = @event.UpdatedAt;
     }
 
     private void Apply(CompanyRenamedEvent @event)
     {
+        _ = @event.CompanyId;
         Name = @event.Name;
         UpdatedAt = @event.UpdatedAt;
     }

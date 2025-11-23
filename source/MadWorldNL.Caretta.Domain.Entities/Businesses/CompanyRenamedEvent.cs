@@ -3,4 +3,4 @@ using MadWorldNL.Caretta.EventStorages;
 
 namespace MadWorldNL.Caretta.Businesses;
 
-public record CompanyRenamedEvent(Name Name, UpdatedTime UpdatedAt) : IDomainEvent;
+public record CompanyRenamedEvent(UniqueId CompanyId, Name Name, UpdatedTime UpdatedAt) : IDomainEvent;

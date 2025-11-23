@@ -12,7 +12,7 @@ public abstract class RootAggregate
     private readonly List<IDomainEvent> _domainEvents = new();
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
     
-    protected void AddDomainEvent(IDomainEvent @event)
+    protected void Raise(IDomainEvent @event)
     {
         _domainEvents.Add(@event);
     }
